@@ -41,50 +41,55 @@ It is designed for stability, automation, and production use.
 
 ---
 
-## Configuration
+## Installation
 
-The service is configured via `appsettings.json`. It supports options for input folders, output folders, and logging.
+### Build
 
-### File Input
+#### Option A: Framework-dependent build
+Requires **.NET 8 Runtime** on the target machine.  
+`dotnet build "C:\Path\Rewriter\Rewriter.csproj" -c Release -o "C:\Deploy\MyService"`
 
-- **DeleteOldFile** – if enabled, the original input file is removed after successful conversion.
-- **FileInputList** – list of sources to watch for files:
-  - **FolderPaths** – list of folders path to monitor.
-  - **Extensions** – list of file extensions to convert (e.g., `.docx`, `.pptx`).
+#### Option B: Self-contained build
+Includes all required runtime files.  
+`dotnet publish "C:\Path\Rewriter\Rewriter.csproj" -c Release -r win-x64 -o "C:\Deploy\MyService"`
 
-### File Output
-
-- **FolderPath** – destination folder where converted `.pdf` files will be saved.
-
-### Logging
-
-- **FolderPath** – directory where log files are written.
-- **UseSeparateFiles** – when true, creates separate log files instead of a single aggregated one.
-- **LogLevel** – sets the minimum log level (e.g., `Information`, `Warning`, `Error`).
-- **FileLogger** – allows setting specific logging rules for file-based logging.
+### Install as a Windows Service
+`sc.exe create MyService binPath= "C:\Deploy\MyService.exe"`
 
 ---
 
-## Installation & Running
+## Configuration
 
-### 1. Build option
+The service is configured via `appsettings.json`.  
 
-#### 1.a Not self-contained build
-- Requires **.NET 8 Runtime** installed on the target machine
-- `dotnet build "C:\Path\Rewriter\Rewriter.csproj" -c Release -o "C:\Deploy\MyService"`
+### File Input
+- **DeleteOldFile** – remove input file after successful conversion.  
+- **FileInputList** – list of sources to monitor:  
+  - **FolderPaths** – folders to watch.  
+  - **Extensions** – file extensions to convert (e.g., `.docx`, `.pptx`).  
 
-#### 1.b Self-contained build
+### File Output
+- **FolderPath** – destination folder for converted `.pdf` files.  
 
-- Includes all runtime files
-- `dotnet publish "C:\Path\Rewriter\Rewriter.csproj" -c Release -r win-x64 -o "C:\Deploy\MyService"`
+### Logging
+- **FolderPath** – directory where log files are written.  
+- **UseSeparateFiles** – when true, creates separate log files.  
+- **LogLevel** – minimum log level (`Information`, `Warning`, `Error`).  
+- **FileLogger** – specific logging rules for file logging.  
 
-### 2. Install as a Windows Service
+---
 
- - `sc.exe create MyService binPath= "C:\Deploy\MyService.exe"`
+## Usage
 
-### 3. Start the service
+After building and installing the service:  
 
- - `sc.exe start MyService`
+### Start the service
+`sc.exe start MyService`
+
+### Stop the service
+`sc.exe stop MyService`
+
+The service will now monitor the configured folders, convert matching files to PDF, and write logs according to your `appsettings.json`.
 
 ---
 
