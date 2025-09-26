@@ -1,8 +1,93 @@
 # Rewriter
 
-## About
-Worker Service that convert files with supported extensions to `.pdf`
+> Long-running Windows background service for automatic file conversion to PDF.
+> Built entirely in C# with observables, DI, and modern .NET patterns.
 
-## Install and run
+---
+
+## Features
+
+- **Background worker service**
+  - Long-running Windows application monitoring input folders for file changes.
+- **Supported input formats**
+  - **Presentation:** `.ppa`, `.ppt`, `.pptm`, `.pptx`
+  - **Document:** `.doc`, `.docm`, `.docx`, `.htm`, `.html`
+- **Logging**
+  - Configurable logger
+  - Supports file-based logs with separate files per run and customizable log levels.
+
+---
+
+## Architecture & Tech
+
+- **Language & Framework:** C# (.NET 8.0)
+- **Service Type:** Long-running Windows background worker
+- **Event-driven:** Observables wrapping `FileSystemWatcher` events for reactive file monitoring
+- **Conversion Engine:**
+  - Uses `Microsoft.Office.Interop` for document and presentation to PDF conversion
+  - Converter and watcher instances are created using the **Factory Pattern** for modularity and flexibility
+  - Custom extension attributes are used to manage different file formats
+- **Configuration & Validation:**
+  - .NET Configuration API with Options pattern
+  - FluentValidation ensures user-supplied options are valid
+- **Hosting & Logging:**
+  - Runs as a Windows service via `Microsoft.Extensions.Hosting`
+  - Logging is configurable with file separation and adjustable log levels
+
+## Status
+
+This project is **finished** and ready for use as a background service.  
+It is designed for stability, automation, and production use.
+
+---
 
 ## Configuration
+
+The service is configured via `appsettings.json`. It supports options for input folders, output folders, and logging.
+
+### File Input
+
+- **DeleteOldFile** – if enabled, the original input file is removed after successful conversion.
+- **FileInputList** – list of sources to watch for files:
+  - **FolderPaths** – list of folders path to monitor.
+  - **Extensions** – list of file extensions to convert (e.g., `.docx`, `.pptx`).
+
+### File Output
+
+- **FolderPath** – destination folder where converted `.pdf` files will be saved.
+
+### Logging
+
+- **FolderPath** – directory where log files are written.
+- **UseSeparateFiles** – when true, creates separate log files instead of a single aggregated one.
+- **LogLevel** – sets the minimum log level (e.g., `Information`, `Warning`, `Error`).
+- **FileLogger** – allows setting specific logging rules for file-based logging.
+
+---
+
+## Installation & Running
+
+### 1. Build option
+
+#### 1.a Not self-contained build
+- Requires **.NET 8 Runtime** installed on the target machine
+- `dotnet build "C:\Path\Rewriter\Rewriter.csproj" -c Release -o "C:\Deploy\MyService"`
+
+#### 1.b Self-contained build
+
+- Includes all runtime files
+- `dotnet publish "C:\Path\Rewriter\Rewriter.csproj" -c Release -r win-x64 -o "C:\Deploy\MyService"`
+
+### 2. Install as a Windows Service
+
+ - `sc.exe create MyService binPath= "C:\Deploy\MyService.exe"`
+
+### 3. Start the service
+
+ - `sc.exe start MyService`
+
+---
+
+## License
+
+Unlicensed — personal or internal use only.
