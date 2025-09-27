@@ -21,7 +21,7 @@
 ## Architecture & Tech
 
 - **Language & Framework:** C# (.NET 8.0)
-- **Service Type:** Long-running Windows background worker
+- **Service Type:** Long-running background service built on the .NET Worker Service template
 - **Event-driven:** Observables wrapping `FileSystemWatcher` events for reactive file monitoring
 - **Conversion Engine:**
   - Uses `Microsoft.Office.Interop` for document and presentation to PDF conversion
