@@ -5,20 +5,7 @@
 
 ---
 
-## Features
-
-- **Background worker service**
-  - Long-running Windows application monitoring input folders for file changes.
-- **Supported input formats**
-  - **Presentation:** `.ppa`, `.ppt`, `.pptm`, `.pptx`
-  - **Document:** `.doc`, `.docm`, `.docx`, `.htm`, `.html`
-- **Logging**
-  - Configurable logger
-  - Supports file-based logs with separate files per run and customizable log levels.
-
----
-
-## Architecture & Tech
+## Architecture & Stack
 
 - **Language & Framework:** C# (.NET 8.0)
 - **Service Type:** Long-running background service built on the .NET Worker Service template
@@ -33,6 +20,21 @@
 - **Hosting & Logging:**
   - Runs as a Windows service via `Microsoft.Extensions.Hosting`
   - Logging is configurable with file separation and adjustable log levels
+
+---
+
+## Features
+
+- **Background worker service**
+  - Long-running Windows application monitoring input folders for file changes.
+- **Supported input formats**
+  - **Presentation:** `.ppa`, `.ppt`, `.pptm`, `.pptx`
+  - **Document:** `.doc`, `.docm`, `.docx`, `.htm`, `.html`
+- **Logging**
+  - Configurable logger
+  - Supports file-based logs with separate files per run and customizable log levels.
+
+---
 
 ## Status
 
