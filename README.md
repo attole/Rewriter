@@ -47,14 +47,23 @@ It is designed for stability, automation, and production use.
 
 #### Option A: Framework-dependent build
 Requires **.NET 8 Runtime** on the target machine.  
-`dotnet build "C:\Path\Rewriter\Rewriter.csproj" -c Release -o "C:\Deploy\MyService"`
+
+```bash
+  dotnet build "C:\Path\Rewriter\Rewriter.csproj" -c Release -o "C:\Deploy\MyService"
+```
 
 #### Option B: Self-contained build
 Includes all required runtime files.  
-`dotnet publish "C:\Path\Rewriter\Rewriter.csproj" -c Release -r win-x64 -o "C:\Deploy\MyService"`
+
+```bash
+  dotnet publish "C:\Path\Rewriter\Rewriter.csproj" -c Release -r win-x64 -o "C:\Deploy\MyService"
+```
 
 ### Install as a Windows Service
-`sc.exe create MyService binPath= "C:\Deploy\MyService.exe"`
+
+```bash
+  sc.exe create MyService binPath= "C:\Deploy\MyService.exe"
+```
 
 ---
 
@@ -84,10 +93,16 @@ The service is configured via `appsettings.json`.
 After building and installing the service:  
 
 ### Start the service
-`sc.exe start MyService`
+
+```bash
+  sc.exe start MyService
+```
 
 ### Stop the service
-`sc.exe stop MyService`
+
+```bash
+  sc.exe stop MyService
+```
 
 The service will now monitor the configured folders, convert matching files to PDF, and write logs according to your `appsettings.json`.
 
